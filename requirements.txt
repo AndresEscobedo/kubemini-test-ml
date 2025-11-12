@@ -1,0 +1,7 @@
+fastapi[standard]
+uvicorn
+numpy
+pandas
+scikit-learn
+aiohttp
+httpx
