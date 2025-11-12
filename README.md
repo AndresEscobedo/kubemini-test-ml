@@ -102,7 +102,7 @@ The Elector service intelligently routes between these models with a preference 
 
 ```bash
 # Set up environment variables
-export PROJECT_ID=your-gcp-project-id
+export PROJECT_ID=cloud-computing-mcd2025
 export LOCATION=us-central1  # Choose appropriate region
 export REPOSITORY=ml-models  # Name of your Artifact Registry repository
 
@@ -111,7 +111,7 @@ gcloud compute instances create ml-deployment-vm \
   --project=$PROJECT_ID \
   --zone=$LOCATION-a \
   --machine-type=e2-standard-4 \
-  --image-family=ubuntu-2004-lts \
+  --image-family=ubuntu-2204-lts \
   --image-project=ubuntu-os-cloud \
   --boot-disk-type=pd-ssd \
   --boot-disk-size=50GB \
