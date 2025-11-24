@@ -61,16 +61,23 @@ async def esperar_respuestas(modelos):
     return resultados
 
 
-# Determine if we're running in Docker
+# Determine if we're running in Docker or Kubernetes
 def is_docker_env():
-    # In Docker Compose, check if environment shows we're in Docker
-    # This is a simple check - in Docker, the hostname is usually the container ID
+    # In Docker, check if /.dockerenv exists
     return os.path.exists("/.dockerenv")
+
+
+def is_kubernetes_env():
+    # In Kubernetes, check for the KUBERNETES_SERVICE_HOST environment variable
+    return os.getenv("KUBERNETES_SERVICE_HOST") is not None
 
 
 # Get the appropriate URLs based on environment
 def get_service_urls():
-    if is_docker_env():
+    if is_kubernetes_env():
+        # In Kubernetes, use service names in the same namespace
+        return {"canary": "http://canary:5001", "model": "http://model:5000"}
+    elif is_docker_env():
         # In Docker Compose, use the service names
         return {"canary": "http://canary:5001", "model": "http://model:5000"}
     else:

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: elector
-        image: ${IMAGE_PLACEHOLDER}
+        image: us-central1-docker.pkg.dev/kubernetes-cc-2025-478900/ml-models/elector:latest
         ports:
         - containerPort: 5002
         resources:
@@ -26,3 +26,5 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
+      imagePullSecrets:
+      - name: gcp-artifact-registry

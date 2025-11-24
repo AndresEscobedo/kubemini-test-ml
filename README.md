@@ -377,6 +377,8 @@ gcloud container clusters create $CLUSTER_NAME \
   --zone=$LOCATION-a \
   --machine-type=e2-standard-2 \
   --num-nodes=3 \
+  --disk-size=80 \
+  --disk-type=pd-standard \
   --release-channel=regular
 
 # Get credentials for kubectl to interact with the cluster
@@ -413,15 +415,15 @@ Build your Docker images and push them to the Artifact Registry:
 ```bash
 # Build and push images
 # Canary model
-docker build -t $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/canary:latest -f canary_model/Dockerfile .
+docker build --platform linux/amd64 -t $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/canary:latest -f canary_model/Dockerfile .
 docker push $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/canary:latest
 
 # Main model
-docker build -t $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/model:latest -f main_model/Dockerfile .
+docker build --platform linux/amd64 -t $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/model:latest -f main_model/Dockerfile .
 docker push $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/model:latest
 
 # Elector
-docker build -t $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/elector:latest -f elector/Dockerfile .
+docker build --platform linux/amd64 -t $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/elector:latest -f elector/Dockerfile .
 docker push $LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/elector:latest
 ```
 
@@ -452,7 +454,7 @@ kubectl create secret docker-registry gcp-artifact-registry \
   --docker-server=$LOCATION-docker.pkg.dev \
   --docker-username=_json_key \
   --docker-password="$(cat key.json)" \
-  --docker-email=your-email@example.com
+  --docker-email=andresyjp@gmail.com
 
 # Delete the key file after creating the secret
 rm key.json
